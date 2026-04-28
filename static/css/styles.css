@@ -1,0 +1,49 @@
+.body{
+    background-color: aquamarine;
+}
+
+div.fixed{
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      /* Żeby to nie róg był centrowany tylko środek */
+      transform: translate(-50%, -50%);
+      width: 300px;
+      background-color: white;
+    }
+
+.tytul-instrukcji{
+    font-family: Arial, sans-serif;
+  color: #333;
+  font-size: 22px;
+  text-align: center;
+  margin-top: 0;
+  background-color: #cccccc;
+  border: 2px solid rgb(75, 74, 74);
+}
+
+.krok{
+    font-family: Arial, sans-serif;
+  color: #333;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.przycisk-start{
+    font-size: 50px;
+    text-align: center;
+    color: black;
+    background-color: rgba(64, 161, 40, 0.582);
+    cursor: pointer;
+    display: block; 
+    margin: 20px auto 0 auto;
+    text-decoration: none; /* Usuwa brzydkie podkreślenie linku */
+    text-align: center;    /* Upewnia się, że tekst w linku jest na środku */
+    box-sizing: border-box; /* Zapobiega "rozlewaniu się" przycisku */
+}
+
+.przycisk-start:hover {
+  background-color: rgba(37, 92, 23, 0.582);
+}

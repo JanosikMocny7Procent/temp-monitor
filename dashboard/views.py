@@ -4,3 +4,6 @@ from django.shortcuts import render
 def home(request):
     # Ta funkcja bierze plik index.html i wysyła go do przeglądarki
     return render(request, 'index.html')
+
+def main(request):
+    return render(request, 'main.html')

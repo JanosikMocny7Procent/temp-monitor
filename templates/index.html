@@ -1,13 +1,25 @@
+{% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="pl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <title>Temperature Monitor</title>
   </head>
   <body>
-    <br />
-    Witaj w monitorze
-    <br />
+    <div class="fixed">
+      <h2 class="tytul-instrukcji">Instrukcje korzystania z monitora:</h2>
+      <ul class="punkty-instrukcji">
+        <li class="krok">
+          Tutaj dodamy instrukcję do łączenia się z Raspberry Pi
+        </li>
+        <li class="krok">
+          Ważne!: Strona nie wspiera jednostek Fahrenheita. Jest to spowodowane
+          moim brakiem szacunku do jednostek imperialnych
+        </li>
+      </ul>
+      <a href="{% url 'main' %}" class="przycisk-start">Start</a>
+    </div>
   </body>
 </html>
