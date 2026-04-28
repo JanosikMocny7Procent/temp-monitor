@@ -1,11 +1,12 @@
-{% load static %}
+{% comment %} Load static jest po to żeby href sie nie wywalał bo ma komende z
+django {% endcomment %} {% load static %}
 <!doctype html>
 <html lang="pl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-    <title>Temperature Monitor</title>
+    <title>Welcome</title>
   </head>
   <body>
     <div class="fixed">

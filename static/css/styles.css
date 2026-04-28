@@ -2,6 +2,7 @@
     background-color: aquamarine;
 }
 
+/* kontener na nazwe, punkty i przycisk*/
 div.fixed{
       position: fixed;
       top: 20%;
@@ -11,6 +12,7 @@ div.fixed{
       width: 300px;
       background-color: white;
     }
+
 
 .tytul-instrukcji{
     font-family: Arial, sans-serif;
@@ -22,6 +24,7 @@ div.fixed{
   border: 2px solid rgb(75, 74, 74);
 }
 
+/* punkty */
 .krok{
     font-family: Arial, sans-serif;
   color: #333;
@@ -46,4 +49,25 @@ div.fixed{
 
 .przycisk-start:hover {
   background-color: rgba(37, 92, 23, 0.582);
+}
+
+/* Boże daj mi siłe */
+/* nie wiem czemu css nie daje mi zmienić wielkości obrazka i zaraz czymś rzucę */
+/* div na ikone, wypisywanie temperatury i wykres (jak kiedyś dodam)*/
+#data-container{
+   display: block;
+    width: 600px;         /* Ustalona szerokość kontenera */
+    margin: 0 auto;       /* To centruje CAŁEGO diva na środku ekranu */
+    text-align: center;   /* To centruje tekst wewnątrz diva */
+}
+/* Tutaj używam hasha, bo temp-icon i temp-display to nie są klasy tylko id */
+#temp-icon{
+    display: block;    /* Obrazek musi być blokiem, żeby margin: auto zadziałał */
+    margin: 20px auto; /* Centruje w poziomie i dodaje odstęp góra/dół */
+    width: 500px;
+    height: auto;
+}
+
+#temp-display{
+    text-align: center;
 }
