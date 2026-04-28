@@ -12,5 +12,6 @@ def main(request):
 
 #Do losowych temperatur
 def get_temp(request):
-    fake_temp = random.randint(-10, 40) 
+    fake_temp = random.uniform(34, 42)
+    fake_temp=round(fake_temp, 1)
     return JsonResponse({'temperature': fake_temp})

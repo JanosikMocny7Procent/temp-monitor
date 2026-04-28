@@ -8,43 +8,14 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div id="data-container">
       <img id="temp-icon" src="" alt="Ładowanie..." style="width: 150px" />
       <h1 id="temp-display">Temperatura: <span id="temp-value">--</span>°C</h1>
     </div>
-
-    <script>
-      function updateTemp() {
-        // Pobieramy dane z naszego nowego adresu
-        fetch("/api/temp")
-          .then((response) => response.json())
-          .then((data) => {
-            const temp = data.temperature;
-            const tempSpan = document.getElementById("temp-value");
-            const img = document.getElementById("temp-icon");
-
-            // 1. Aktualizujemy tekst
-            tempSpan.innerText = temp;
-
-            // 2. Logika zmiany obrazka w locie
-            if (temp > 25) {
-              img.src = "/static/images/uncanny.png";
-              document.body.style.backgroundColor = "#ffe6e6"; // bonus: zmiana koloru tła
-            } else if (temp < 0) {
-              img.src = "/static/images/dead.png";
-              document.body.style.backgroundColor = "#e6f7ff";
-            } else {
-              img.src = "/static/images/canny.png";
-              document.body.style.backgroundColor = "#f0fff0";
-            }
-          });
-      }
-
-      // Uruchom funkcję co 3 sekundy (3000 milisekund)
-      setInterval(updateTemp, 3000);
-
-      // Uruchom też raz na samym początku
-      updateTemp();
-    </script>
+    <div id="graph-container">
+      <canvas id="temp-chart"></canvas>
+    </div>
+    <script src="{% static 'js/updateTemp.js' %}"></script>
   </body>
 </html>

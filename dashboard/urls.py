@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('monitor/', views.main, name='main'),
     #do losowych temperatur
-    path('api/temp', views.get_temp, name='get_temp'),
+    path('api/temp/', views.get_temp, name='get_temp'),
 ]

@@ -71,3 +71,9 @@ div.fixed{
 #temp-display{
     text-align: center;
 }
+
+#temp-chart{
+    width: 100%; 
+    max-width: 600px; 
+    margin: 20px auto;
+}
