@@ -15,3 +15,20 @@ def get_temp(request):
     fake_temp = random.uniform(34, 42)
     fake_temp=round(fake_temp, 1)
     return JsonResponse({'temperature': fake_temp})
+
+
+
+
+# from django.views.decorators.csrf import csrf_exempt
+# from .models import TemperatureReading # Assuming you have a model
+
+# @csrf_exempt # Allows the Pi to send data without a login token
+# def receive_sensor_data(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         temp = data.get('temp')
+        
+#         # Save to database
+#         TemperatureReading.objects.create(value=temp)
+        
+#         return JsonResponse({"status": "success"})
