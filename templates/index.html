@@ -1,4 +1,4 @@
-{% comment %} Load static jest po to żeby href sie nie wywalał bo ma komende z
+<!-- {% comment %} Load static jest po to żeby href sie nie wywalał bo ma komende z
 django {% endcomment %} {% load static %}
 <!doctype html>
 <html lang="pl">
@@ -23,4 +23,150 @@ django {% endcomment %} {% load static %}
       <a href="{% url 'main' %}" class="przycisk-start">Start</a>
     </div>
   </body>
+</html> -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TempMonitor</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #161b2a;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Decorative background glow */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--accent-glow);
+            filter: blur(100px);
+            border-radius: 50%;
+            top: 10%;
+            left: 10%;
+            z-index: -1;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border: 1px solid #2d3748;
+            padding: 3rem;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tytul-instrukcji {
+            color: var(--text-dim);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+        }
+
+        .punkty-instrukcji {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .krok {
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 1rem;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            border-left: 4px solid var(--accent-blue);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .krok strong {
+            color: var(--accent-blue);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .przycisk-start {
+            display: block;
+            background: var(--accent-blue);
+            color: #000;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .przycisk-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--accent-glow);
+            filter: brightness(1.1);
+        }
+
+        .warning-note {
+            font-size: 0.8rem;
+            color: #ef4444;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Temp Monitor</h1>
+        <h2 class="tytul-instrukcji">Informacje Wstępne do Projektu</h2>
+        
+        <ul class="punkty-instrukcji">
+            <li class="krok">
+                <strong>1. Połączenie z Raspberry Pi</strong>
+                Upewnij się, że skrypt czujnika Raspberry Pi jest uruchomiony i wskazuje na adres IP Twojego laptopa w sieci lokalnej.
+            </li>
+            <li class="krok">
+                <strong>2. Skalowanie Jednostek</strong>
+                System operuje wyłącznie w skali Celsjusza. Stopnie Fahrenheita nie są wspierane ze względu na brak szacunku wobec jednostek imperialnych.
+            </li>
+            <li class="krok">
+                <strong>3. Monitorowanie temperatury pacjenta</strong>
+                Po kliknięciu "Start", system zacznie pobierać dane symulacyjne co 2 sekundy.
+            </li>
+        </ul>
+
+        <a href="{% url 'main' %}" class="przycisk-start">Uruchom Pomiar</a>
+    </div>
+
+</body>
 </html>

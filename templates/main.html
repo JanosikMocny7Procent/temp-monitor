@@ -129,32 +129,32 @@
 <body>
 
     <div class="dashboard-header">
-        <h1>Temperature Monitor Readings</h1>
+        <h1>Odczyt temperatury z płytki</h1>
         <div id="connection-dot" style="width: 12px; height: 12px; background: var(--accent-green); border-radius: 50%;"></div>
     </div>
 
     <div class="grid-container" id="dashboard-body">
         
         <div class="card">
-            <div class="label">Current Temperature</div>
+            <div class="label">Aktualna Temperatura</div>
             <div class="value-large temp-color" id="current-temp">--°C</div>
-            <div id="status-indicator" class="status-badge">Connecting...</div>
+            <div id="status-indicator" class="status-badge">Łączenie...</div>
         </div>
 
         <div class="card">
-            <div class="label">Total Session Time</div>
+            <div class="label">Całkowity Czas Sesji</div>
             <div class="value-large total-color" id="total-session-time">0s</div>
-            <div class="sub-text">Monitoring duration</div>
+            <div class="sub-text">Czas monitorowania</div>
         </div>
 
         <div class="card">
-            <div class="label">Time Above 37.5°C</div>
+            <div class="label">Czas Powyżej 37.5°C</div>
             <div class="value-large danger-color" id="danger-timer">0s</div>
-            <div class="sub-text" id="ratio-text">0% of total time</div>
+            <div class="sub-text" id="ratio-text">0% całkowitego czasu</div>
         </div>
 
         <div class="chart-container">
-            <div class="label" style="margin-bottom: 1rem;">Temperature Trend Analysis</div>
+            <div class="label" style="margin-bottom: 1rem;">Analiza Trendu Temperatury</div>
             <canvas id="tempChart" height="120"></canvas>
         </div>
     </div>
@@ -192,7 +192,7 @@
                         ticks: { color: '#94a3b8' },
                         title: {
                             display: true,
-                            text: 'Temperature [C]',
+                            text: 'Temperatura [C]',
                             color: '#94a3b8',
                             font: { size: 12, weight: 'bold' }
                         }
@@ -202,7 +202,7 @@
                         ticks: { color: '#94a3b8' },
                         title: {
                             display: true,
-                            text: 'Time [s]',
+                            text: 'Czas [s]',
                             color: '#94a3b8',
                             font: { size: 12, weight: 'bold' }
                         }
@@ -228,17 +228,17 @@
                 document.getElementById('current-temp').innerText = temp + "°C";
                 document.getElementById('total-session-time').innerText = totalSeconds + "s";
                 document.getElementById('danger-timer').innerText = dangerSeconds + "s";
-                document.getElementById('ratio-text').innerText = `${ratio}% of total time`;
+                document.getElementById('ratio-text').innerText = `${ratio}% czasu całkowitego`;
 
                 const statusBadge = document.getElementById('status-indicator');
                 const body = document.getElementById('dashboard-body');
                 
                 if (temp >= THRESHOLD) {
-                    statusBadge.innerText = "ABOVE THRESHOLD";
+                    statusBadge.innerText = "POWYŻEJ TEMPERATURY GRANICZNEJ";
                     statusBadge.style.color = "var(--accent-red)";
                     body.classList.add('danger-state');
                 } else {
-                    statusBadge.innerText = "TEMPERATURE STABLE";
+                    statusBadge.innerText = "TEMPERATURA W NORMIE";
                     statusBadge.style.color = "var(--accent-green)";
                     body.classList.remove('danger-state');
                 }
@@ -255,7 +255,7 @@
                 tempChart.update();
 
             } catch (e) {
-                console.error("Connection lost");
+                console.error("Utracono połączenie.");
             }
         }
 
