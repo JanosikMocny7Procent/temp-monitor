@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %}
 <!doctype html>
 <html lang="pl">
   <head>
@@ -18,4 +18,248 @@
     </div>
     <script src="{% static 'js/updateTemp.js' %}"></script>
   </body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temp Monitor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #161b2a;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-red: #ef4444;
+            --accent-green: #22c55e;
+            --accent-purple: #a855f7;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            width: 100%;
+            max-width: 1100px;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 1rem 2rem 1rem;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #2d3748;
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .label {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .value-large {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+
+        .sub-text {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .chart-container {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            border: 1px solid #2d3748;
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        #status-indicator { background: rgba(34, 197, 94, 0.1); color: var(--accent-green); }
+        .danger-state #status-indicator { background: rgba(239, 68, 68, 0.1); color: var(--accent-red); }
+        
+        .temp-color { color: var(--accent-blue); }
+        .total-color { color: var(--accent-purple); }
+        .danger-color { color: var(--accent-red); }
+
+        @media (max-width: 900px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-header">
+        <h1>Odczyt temperatury z płytki</h1>
+        <div id="connection-dot" style="width: 12px; height: 12px; background: var(--accent-green); border-radius: 50%;"></div>
+    </div>
+
+    <div class="grid-container" id="dashboard-body">
+        
+        <div class="card">
+            <div class="label">Aktualna Temperatura</div>
+            <div class="value-large temp-color" id="current-temp">--°C</div>
+            <div id="status-indicator" class="status-badge">Łączenie...</div>
+        </div>
+
+        <div class="card">
+            <div class="label">Całkowity Czas Sesji</div>
+            <div class="value-large total-color" id="total-session-time">0s</div>
+            <div class="sub-text">Czas monitorowania</div>
+        </div>
+
+        <div class="card">
+            <div class="label">Czas Powyżej 37.5°C</div>
+            <div class="value-large danger-color" id="danger-timer">0s</div>
+            <div class="sub-text" id="ratio-text">0% całkowitego czasu</div>
+        </div>
+
+        <div class="chart-container">
+            <div class="label" style="margin-bottom: 1rem;">Analiza Trendu Temperatury</div>
+            <canvas id="tempChart" height="120"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const THRESHOLD = 37.5;
+        const POLLING_INTERVAL = 2000; 
+        
+        let totalSeconds = 0;
+        let dangerSeconds = 0;
+
+        // --- Chart Config with Axis Labels ---
+        const ctx = document.getElementById('tempChart').getContext('2d');
+        const tempChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temperature',
+                    data: [],
+                    borderColor: '#38bdf8',
+                    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#38bdf8'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { 
+                        grid: { color: '#2d3748' }, 
+                        ticks: { color: '#94a3b8' },
+                        title: {
+                            display: true,
+                            text: 'Temperatura [C]',
+                            color: '#94a3b8',
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    },
+                    x: { 
+                        grid: { color: '#2d3748' }, 
+                        ticks: { color: '#94a3b8' },
+                        title: {
+                            display: true,
+                            text: 'Czas [s]',
+                            color: '#94a3b8',
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+
+        async function updateData() {
+            try {
+                const response = await fetch('/api/temp/');
+                const data = await response.json();
+                const temp = data.temperature;
+
+                // Update Timers (Increment by 2s)
+                totalSeconds += (POLLING_INTERVAL / 1000);
+                if (temp >= THRESHOLD) {
+                    dangerSeconds += (POLLING_INTERVAL / 1000);
+                }
+
+                // UI Updates
+                const ratio = ((dangerSeconds / totalSeconds) * 100).toFixed(1);
+                document.getElementById('current-temp').innerText = temp + "°C";
+                document.getElementById('total-session-time').innerText = totalSeconds + "s";
+                document.getElementById('danger-timer').innerText = dangerSeconds + "s";
+                document.getElementById('ratio-text').innerText = `${ratio}% czasu całkowitego`;
+
+                const statusBadge = document.getElementById('status-indicator');
+                const body = document.getElementById('dashboard-body');
+                
+                if (temp >= THRESHOLD) {
+                    statusBadge.innerText = "POWYŻEJ TEMPERATURY GRANICZNEJ";
+                    statusBadge.style.color = "var(--accent-red)";
+                    body.classList.add('danger-state');
+                } else {
+                    statusBadge.innerText = "TEMPERATURA W NORMIE";
+                    statusBadge.style.color = "var(--accent-green)";
+                    body.classList.remove('danger-state');
+                }
+
+                // Chart Update - Using elapsed seconds for X-axis
+                if (tempChart.data.labels.length > 15) {
+                    tempChart.data.labels.shift();
+                    tempChart.data.datasets[0].data.shift();
+                }
+                
+                // Add the current totalSeconds as the X-axis label
+                tempChart.data.labels.push(totalSeconds + "s");
+                tempChart.data.datasets[0].data.push(temp);
+                tempChart.update();
+
+            } catch (e) {
+                console.error("Utracono połączenie.");
+            }
+        }
+
+        setInterval(updateData, POLLING_INTERVAL);
+    </script>
+</body>
 </html>
