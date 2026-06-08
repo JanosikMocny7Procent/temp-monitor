@@ -1,5 +1,6 @@
 .body{
     background-color: aquamarine;
+    overflow: auto;
 }
 
 /* kontener na nazwe, punkty i przycisk*/
