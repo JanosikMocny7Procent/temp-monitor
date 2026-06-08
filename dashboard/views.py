@@ -34,5 +34,7 @@ def get_temp(request): #def receive_sensor_data(request):
         
         # Save to database
         TemperatureReading.objects.create(value=temp)
-        
         return JsonResponse({"status": "success"})
+        
+    elif request.method == 'GET':
+        return JsonResponse({"temperature": temp})
