@@ -23,8 +23,11 @@ def main(request):
 from django.views.decorators.csrf import csrf_exempt
 from .models import TemperatureReading # Assuming you have a model
 
+temp = 0.0
+
 @csrf_exempt # Allows the Pi to send data without a login token
 def get_temp(request): #def receive_sensor_data(request):
+    global temp
     if request.method == 'POST':
         data = json.loads(request.body)
         temp = data.get('temp')
