@@ -19,16 +19,16 @@ def get_temp(request):
 
 
 
-# from django.views.decorators.csrf import csrf_exempt
-# from .models import TemperatureReading # Assuming you have a model
+from django.views.decorators.csrf import csrf_exempt
+from .models import TemperatureReading # Assuming you have a model
 
-# @csrf_exempt # Allows the Pi to send data without a login token
-# def receive_sensor_data(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body)
-#         temp = data.get('temp')
+@csrf_exempt # Allows the Pi to send data without a login token
+def receive_sensor_data(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        temp = data.get('temp')
         
-#         # Save to database
-#         TemperatureReading.objects.create(value=temp)
+        # Save to database
+        TemperatureReading.objects.create(value=temp)
         
-#         return JsonResponse({"status": "success"})
+        return JsonResponse({"status": "success"})
